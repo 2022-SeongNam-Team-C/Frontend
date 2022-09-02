@@ -1,15 +1,14 @@
 <template>
   <div class="header">
-    <div></div>
-    <div class="header_title_wrapper">
+    <div class="flex_center">
       <img
-        src="https://via.placeholder.com/96x106"
-        alt="프로필 이미지"
-        class="header_profile"
+        src="https://via.placeholder.com/28x28"
+        alt="히스토리 둘러보기"
+        class="header_history_search_icon"
       />
-      <h1 class="header_title">Ladder</h1>
-      <p class="header_subtitle">Line And Drawing Draw Especial Recollection</p>
+      <p>염태민님의 History 둘러보기</p>
     </div>
+    <Header_Title />
     <div>
       <div class="flex_center">
         <img
@@ -26,19 +25,13 @@
           </div>
         </div>
       </div>
-      <div class="flex_center">
-        <img
-          src="https://via.placeholder.com/28x28"
-          alt="히스토리 둘러보기"
-          class="header_history_search_icon"
-        />
-        <p>염태민님의 History 둘러보기</p>
-      </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+import Header_Title from "@/components/Header_Title.vue";
+</script>
 
 <style lang="scss" scoped>
 .header {
@@ -46,7 +39,7 @@
   justify-content: space-between;
   align-items: flex-start;
 
-  margin: 2.2em 0px 1.1em 0px;
+  margin: 2.2em 0.5em 1.1em 0.5em;
 }
 .flex {
   display: flex;
@@ -56,29 +49,12 @@
   justify-content: center;
   align-items: center;
 }
-.header_title_wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
 .header_menu {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-
-  margin-top: 12px;
 }
-.header_title {
-  font-size: 40px;
 
-  margin: 4px 0px 4px 0px;
-}
-.header_subtitle {
-  font-size: 20px;
-
-  margin: 0px;
-}
 .header_profile {
   margin-right: 10px;
 }
