@@ -4,6 +4,7 @@
     :style="{ width: width ? width : '200px' }"
     alt="Input"
   />
+  
 </template>
 
 <script setup lang="ts">

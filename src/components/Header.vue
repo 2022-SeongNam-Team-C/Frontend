@@ -26,12 +26,60 @@
         </div>
       </div>
     </div>
+    <div class="SNS">
+      <img
+          class="kakao_btn"
+          src="@/assets/icons/kakao.png"
+          @click="kakaoLink"
+      /> 
+        <ShareNetwork
+            network="facebook"
+            url="https://www.naver.com/"
+            title="Ladder"
+            description="Line And Drawing, Draw Especial Recollection"
+            hashtags="Frontend, Programming">
+            <img
+                class="facebook_btn"
+                src="@/assets/icons/facebook.png"
+            /> 
+        </ShareNetwork>
+        <ShareNetwork
+            network="twitter"
+            url="https://www.naver.com/"
+            title="Ladder-Line And Drawing, Draw Especial Recollection"
+            description="Line And Drawing, Draw Especial Recollection">
+            <img
+                class="twitter_btn"
+                src="@/assets/icons/twitter.png"
+            /> 
+        </ShareNetwork>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import Header_Title from "@/components/Header_Title.vue";
-</script>
+
+<script>
+    import Header_Title from "@/components/Header_Title.vue";
+
+    export default {
+      components:{ Header_Title },
+      methods: {
+        kakaoLink() {
+          window.Kakao.Link.sendDefault({
+            objectType: 'text',
+            text:
+              'Ladder - Line And Drawing, Draw Especial Recollection',
+            link: {
+              mobileWebUrl:
+                'https://developers.kakao.com',
+              webUrl:
+                'https://developers.kakao.com',
+            }
+        });
+        }
+      }
+    }
+ </script>
 
 <style lang="scss" scoped>
 .header {
@@ -54,7 +102,6 @@ import Header_Title from "@/components/Header_Title.vue";
   flex-direction: column;
   align-items: flex-end;
 }
-
 .header_profile {
   margin-right: 10px;
 }
@@ -65,6 +112,20 @@ import Header_Title from "@/components/Header_Title.vue";
   margin-right: 4px;
 }
 .header_menu_button {
+  cursor: pointer;
+}
+.link-icon { 
+  position: relative; 
+  display: inline-block; 
+  width: auto;    
+  font-size: 14px; 
+  font-weight: 500; 
+  color: #333; 
+  margin-right: 10px; 
+  padding-top: 50px; 
+}
+.SNS{
+  display: flex;
   cursor: pointer;
 }
 </style>
