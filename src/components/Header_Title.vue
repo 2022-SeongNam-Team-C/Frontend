@@ -33,4 +33,13 @@
   font-family: "Noto Serif KR", serif;
   font-weight: bold;
 }
+@media screen and (max-width: 768px) {
+  .header__title {
+    font-size: 32px;
+  }
+  .header__subtitle {
+    font-size: 16px;
+    text-align: center;
+  }
+}
 </style>

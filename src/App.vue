@@ -40,6 +40,11 @@ html {
 .wrapper {
   margin: 10px 20px;
 }
+@media screen and (max-width: 768px) {
+  .wrapper {
+    margin: 5px 10px;
+  }
+}
 .flex {
   display: flex;
 }
