@@ -3,12 +3,12 @@
     <Header></Header>
 
     <div class="input__wrapper">
-      <Input placeholder="아이디" width="423px" :onChange="changeId" />
+      <Input placeholder="이메일" width="423px" :onChange="changeEmail" />
       <Input placeholder="비밀번호" width="423px" :onChange="changePassword" />
     </div>
     <div class="button__wrapper">
       <div class="button">로그인</div>
-      <div class="button__reverse">회원가입</div>
+      <div class="button__reverse" @click="routerSignUp">회원가입</div>
     </div>
   </div>
 </template>
@@ -18,18 +18,24 @@ import Header from "@/components/Header_Title.vue";
 import Input from "@/components/common/Input.vue";
 
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const id = ref<string>("");
+const router = useRouter();
+const email = ref<string>("");
 const password = ref<string>("");
 
-function changeId(value: string) {
-  id.value = value;
-  console.log("id", value);
+function changeEmail(value: string) {
+  email.value = value;
+  console.log("email", value);
 }
 
 function changePassword(value: string) {
   password.value = value;
   console.log("password", value);
+}
+
+function routerSignUp() {
+  router.push("/signup");
 }
 </script>
 

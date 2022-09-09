@@ -18,6 +18,8 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  margin: 0 auto;
 }
 .header__title {
   font-size: 40px;

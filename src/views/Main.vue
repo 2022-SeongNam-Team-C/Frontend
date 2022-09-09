@@ -18,6 +18,16 @@
       </div>
       <div class="upload__confirm__button" @click="imageChange()">확인</div>
     </template>
+    <div
+      v-else
+      class="flex__center"
+      style="flex-direction: column; margin-top: 32px"
+    >
+      <img src="@/assets/icons/camera.png" alt="카메라 아이콘" width="300" />
+      <div class="upload__text" style="margin-top: 24px">
+        사타리타고 올라갈 준비가 되셨나요?
+      </div>
+    </div>
   </div>
   <div class="upload__wrapper" v-if="state == 'confirm'">
     <div class="upload__confirm__wrapper">
@@ -35,7 +45,7 @@
           <div class="upload__confirm__share__title">
             완성된 사진을 친구들에게 사진을 공유해보세요!
           </div>
-          <div class="flex">
+          <div class="flex mobile__dir">
             <div class="upload__confirm__share__icon">
               <img
                 src="@/assets/icons/icon-kakao.png"
@@ -68,7 +78,7 @@
             사진을 다운로드 하거나, 전송하기 버튼을 누르시면 이메일로 사진을
             보내드려요.
           </div>
-          <div class="flex">
+          <div class="flex mobile__dir">
             <div class="upload__confirm__share__icon">
               <img
                 src="@/assets/icons/download.png"
@@ -133,6 +143,8 @@ function ConfirmEvent() {
 }
 function ProcessEvent() {
   state.value = "process";
+  file.value = null;
+  image.value = null;
 }
 </script>
 
@@ -158,6 +170,8 @@ function ProcessEvent() {
   color: #000;
 
   margin-bottom: 1em;
+
+  word-break: keep-all;
 }
 .upload__confirm__share__icon {
   display: flex;
@@ -234,11 +248,7 @@ function ProcessEvent() {
 
   object-fit: contain;
 }
-@media screen and (max-width: 768px) {
-  .upload__image {
-    max-width: 80vw;
-  }
-}
+
 .upload__input {
   display: none;
 }
@@ -257,5 +267,36 @@ function ProcessEvent() {
   text-align: center;
 
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .upload__image {
+    max-width: 80vw;
+  }
+  .upload__confirm__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+  }
+  .upload__confirm__share__title {
+    width: 90%;
+    text-align: center;
+    margin: 0 auto 8px auto;
+  }
+  .mobile__dir {
+    justify-content: center;
+    align-items: center;
+  }
+  .upload__header__wrapper {
+    margin: 0 auto !important;
+  }
+  .upload__confirm__share__icon {
+    margin: 0px 10px !important;
+  }
+  .upload__confirm__go__main {
+    margin: 0px 0px 60px 0px !important;
+  }
 }
 </style>
