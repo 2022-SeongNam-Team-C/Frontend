@@ -26,41 +26,42 @@
         </div>
       </div>
     </div>
-    <div class="SNS">
-      <img
-          class="kakao_btn"
-          src="@/assets/icons/kakao.png"
-          @click="kakaoLink"
-      /> 
-        <ShareNetwork
-            network="facebook"
-            url="https://www.naver.com/"
-            title="Ladder"
-            description="Line And Drawing, Draw Especial Recollection"
-            hashtags="Frontend, Programming">
-            <img
-                class="facebook_btn"
-                src="@/assets/icons/facebook.png"
-            /> 
-        </ShareNetwork>
-        <ShareNetwork
-            network="twitter"
-            url="https://www.naver.com/"
-            title="Ladder-Line And Drawing, Draw Especial Recollection"
-            description="Line And Drawing, Draw Especial Recollection">
-            <img
-                class="twitter_btn"
-                src="@/assets/icons/twitter.png"
-            /> 
-        </ShareNetwork>
-    </div>
   </div>
-</template>
+  <div class="SNS">
+    <img
+      class="kakao_btn"
+      src="@/assets/icons/kakao.png"
+      @click="kakaoLink"
+    /> 
+    <ShareNetwork
+      network="facebook"
+      url="https://www.naver.com/"
+      title="Ladder"
+      description="Line And Drawing, Draw Especial Recollection"
+      hashtags="Frontend, Programming">
+      <img
+        class="facebook_btn"
+        src="@/assets/icons/facebook.png"
+        /> 
+    </ShareNetwork>
+  </div>
+  <div class="Modal">
+    <button id="show-modal" @click="showModal = true">Show Modal</button>
 
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <modal :show="showModal" @close="showModal = false">
+        <template #header>
+          <h3>custom header</h3>
+        </template>
+      </Modal>
+    </Teleport>
+  </div> 
+</template>
 
 <script>
     import Header_Title from "@/components/Header_Title.vue";
-
+    import Modal from '@/components/Modal.vue'
     export default {
       components:{ Header_Title },
       methods: {
@@ -78,8 +79,14 @@
         });
         }
       }
+      components: { Modal },
+      data() {
+        return {
+          showModal: false
+        }
+      }
     }
- </script>
+</script>
 
 <style lang="scss" scoped>
 .header {
