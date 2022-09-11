@@ -46,13 +46,13 @@
     </ShareNetwork>
   </div>
   <div class="Modal">
-    <button id="show-modal" @click="showModal = true">Show Modal</button>
+    <button id="show-modal" @click="showModal = true">전송하기</button>
 
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
       <modal :show="showModal" @close="showModal = false">
         <template #header>
-          <h3>custom header</h3>
+          <h3>하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!</h3>
         </template>
       </Modal>
     </Teleport>
@@ -61,9 +61,10 @@
 
 <script>
     import Header_Title from "@/components/Header_Title.vue";
-    import Modal from '@/components/Modal.vue'
-    export default {
-      components:{ Header_Title },
+    import Modal from '@/components/Modal.vue';
+
+    export default{
+      components:{ Header_Title, Modal},
       methods: {
         kakaoLink() {
           window.Kakao.Link.sendDefault({
@@ -78,13 +79,12 @@
             }
         });
         }
-      }
-      components: { Modal },
+      },
       data() {
         return {
           showModal: false
         }
-      }
+      },
     }
 </script>
 
