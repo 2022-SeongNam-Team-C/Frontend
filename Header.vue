@@ -26,43 +26,60 @@
         </div>
       </div>
     </div>
-    <div class="SNS">
-      <img
-          class="kakao_btn"
-          src="@/assets/icons/kakao.png"
-          @click="kakaoLink"
-      /> 
-        <ShareNetwork
-            network="facebook"
-            url="https://www.naver.com/"
-            title="Ladder"
-            description="Line And Drawing, Draw Especial Recollection"
-            hashtags="Frontend, Programming">
-            <img
-                class="facebook_btn"
-                src="@/assets/icons/facebook.png"
-            /> 
-        </ShareNetwork>
-        <ShareNetwork
-            network="twitter"
-            url="https://www.naver.com/"
-            title="Ladder-Line And Drawing, Draw Especial Recollection"
-            description="Line And Drawing, Draw Especial Recollection">
-            <img
-                class="twitter_btn"
-                src="@/assets/icons/twitter.png"
-            /> 
-        </ShareNetwork>
-    </div>
   </div>
-</template>
+  <div class="SNS">
+    <img
+      class="kakao_btn"
+      src="@/assets/icons/kakao.png"
+      @click="kakaoLink"
+    /> 
+    <ShareNetwork
+      network="facebook"
+      url="https://www.naver.com/"
+      title="Ladder"
+      description="Line And Drawing, Draw Especial Recollection"
+      hashtags="Frontend, Programming">
+      <img
+        class="facebook_btn"
+        src="@/assets/icons/facebook.png"
+        /> 
+    </ShareNetwork>
+  </div>
 
+  <div class="Modal">
+    <button id="show-modal" @click="showModal = true">웹-전송하기</button>
+
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <modal :show="showModal" @close="showModal = false">
+        <template #header>
+          <h3>하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!</h3>
+        </template>
+      </Modal>
+    </Teleport>
+  </div> 
+
+  <div class="Modalmobile">
+    <button id="show-modal" @click="showModal = true">모바일-전송하기</button>
+
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <modal :show="showModal" @close="showModa = false">
+        <template #header>
+          <h3>하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!</h3>
+        </template>
+      </Modal>
+    </Teleport>
+  </div> 
+</template>
 
 <script>
     import Header_Title from "@/components/Header_Title.vue";
+    import Modal from '@/components/Modal.vue';
+    import Modalmobile from '@/components/Modalmobile.vue';
 
-    export default {
-      components:{ Header_Title },
+    export default{
+      components:{ Header_Title, Modal, Modalmobile},
       methods: {
         kakaoLink() {
           window.Kakao.Link.sendDefault({
@@ -77,9 +94,14 @@
             }
         });
         }
-      }
+      },
+      data() {
+        return {
+          showModal: false
+        }
+      },
     }
- </script>
+</script>
 
 <style lang="scss" scoped>
 .header {
