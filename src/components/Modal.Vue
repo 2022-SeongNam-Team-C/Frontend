@@ -16,10 +16,7 @@
                 하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!
               </slot>
             </div>
-  
-            <div class="modal-body">
-              <slot name="body">test@test.com</slot>
-            </div>
+            <input class="message" placeholder="test@test.com" />
             <Form>
               <div class="modal-footer">
                   <button type="submit"
@@ -68,7 +65,7 @@
   .modal-container {
     width: 630px;
     height: 331px;
-    margin: 6px 600px 0 600px;
+    margin: 6px 500px 0 600px;
     padding: 93px 39px 9px 65px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
@@ -92,39 +89,36 @@
   
   
   .modal-body {
-    width: 105px;
-    height: 13px;
-    margin: 0 186px 1px 0;
-    font-family: 'GmarketSansLight';
-    font-size: 14px;
-    font-weight: 300;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
-    color: #8f8f8f;
-
     width: 486px;
     height: 42px;
     margin: 31px 40px 41px 0;
-    padding: 15px 47px 0 13px;
+    padding: 15px 40px 0 13px;
     border-radius: 20.6px;
     border: solid 0.4px #000;
     background-color: #fff;
   }
   
+  .message {
+    width: 486px;
+    height: 42px;
+    margin: 31px 40px 41px 0;
+    padding: 1px 47px 0 13px;
+    border-radius: 20.6px;
+    border: solid 0.4px #000;
+    background-color: #fff;
+  }
+
   .modal-default-button {
     width: 91px;
     height: 39px;
-    margin: 41px 7px 1px 198px;
+    margin: 4px 7px 1px 198px;
     border-radius: 10px;
     background-color: #ddddf7;
   }
   
   .modal-footer {
     width: 26px;
-    height: 13px;
+    height: 30px;
     font-family: GmarketSansTTF;
     font-size: 14px;
     font-weight: 300;

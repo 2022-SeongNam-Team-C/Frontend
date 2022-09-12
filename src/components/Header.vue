@@ -45,6 +45,7 @@
         /> 
     </ShareNetwork>
   </div>
+
   <div class="Modal">
     <button id="show-modal" @click="showModal = true">전송하기</button>
 
