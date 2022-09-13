@@ -2,13 +2,14 @@
   <Header></Header>
   <div class="upload__wrapper" v-if="state == 'process'">
     <div class="flex__center upload__header__wrapper">
-      <div class="upload__text">당신의 추억을 돌려주세요!</div>
+      <div class="upload__text">당신의 추억을 올려주세요!</div>
       <label>
         <div class="upload__button">파일업로드</div>
         <input
           type="file"
           class="upload__input"
           @change="onFileChange($event)"
+          ref="fileInput"
         />
       </label>
     </div>
@@ -21,11 +22,25 @@
     <div
       v-else
       class="flex__center"
-      style="flex-direction: column; margin-top: 32px"
+      style="flex-direction: column; margin-top: 24px"
     >
-      <img src="@/assets/icons/camera.png" alt="카메라 아이콘" width="300" />
-      <div class="upload__text" style="margin-top: 24px">
-        사타리타고 올라갈 준비가 되셨나요?
+      <div
+        :class="isDragged ? 'dragged' : ''"
+        class="upload__image__wrapper__shadow"
+        @dragenter="onDragenter"
+        @dragover="onDragover"
+        @dragleave="onDragleave"
+        @drop="onDrop"
+        @click="onClick"
+      >
+        <img
+          src="@/assets/icons/download-image.png"
+          class="upload__image__wrapper__download__image"
+        />
+        <div class="upload__text">사진을 끌어 업로드 해주세요.</div>
+      </div>
+      <div v-if="images" class="w-full h-full flex items-center">
+        <img :src="images" alt="image" />
       </div>
     </div>
   </div>
@@ -111,9 +126,11 @@ import { ref } from "vue";
 import Header from "@/components/Header.vue";
 
 const state = ref<string>("process");
+const images = ref<string>("");
 const file = ref<File | null>();
 const image = ref<any>();
-
+const fileInput = ref<any>(null);
+const isDragged = ref<boolean>(false);
 function onFileChange($event: Event) {
   const target = $event.target as HTMLInputElement;
   if (target && target.files) {
@@ -145,6 +162,34 @@ function ProcessEvent() {
   state.value = "process";
   file.value = null;
   image.value = null;
+}
+
+function onClick() {
+  fileInput.value.click();
+}
+function onDragenter(event: any) {
+  // class 넣기
+  isDragged.value = true;
+}
+function onDragleave(event: any) {
+  isDragged.value = false;
+}
+function onDragover(event: any) {
+  // 드롭을 허용하도록 prevetDefault() 호출
+  event.preventDefault();
+}
+function onDrop(event: any) {
+  // 기본 액션을 막음 (링크 열기같은 것들)
+  event.preventDefault();
+  isDragged.value = false;
+  const files = event.dataTransfer.files;
+
+  file.value = files[0];
+  const reader = new FileReader();
+  reader.onload = (e?: any) => {
+    image.value = e.target.result;
+  };
+  reader.readAsDataURL(files[0]);
 }
 </script>
 
@@ -235,9 +280,29 @@ function ProcessEvent() {
   box-sizing: border-box;
 }
 
+.upload__image__wrapper__shadow {
+  width: 643px;
+  height: 405px;
+
+  border-radius: 15px;
+  background-color: #ddddf7;
+
+  margin: 0px auto 0px auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  box-sizing: border-box;
+}
+
 @media screen and (max-width: 768px) {
   .upload__image__wrapper {
     padding: 1em 1.2em;
+  }
+  .upload__image__wrapper__shadow {
+    width: 90%;
   }
 }
 .upload__image {
@@ -269,6 +334,14 @@ function ProcessEvent() {
   cursor: pointer;
 }
 
+.upload__image__wrapper__download__image {
+  width: 60px;
+  margin-bottom: 4px;
+}
+.dragged {
+  border: 2px dashed gray;
+  opacity: 0.5;
+}
 @media screen and (max-width: 768px) {
   .upload__image {
     max-width: 80vw;

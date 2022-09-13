@@ -1,8 +1,9 @@
 <template>
   <div class="header">
     <div
-      class="flex__center header__sub__wrapper mobile__display__none"
+      class="flex__center header__sub__wrapper mobile__display__none cursor__pointer"
       v-if="authStatus"
+      @click="routerHistory"
     >
       <img
         width="28"
@@ -21,7 +22,10 @@
       style="margin: 20px 0px"
       class="mobile__display__block"
     >
-      <div class="flex__center header__sub__wrapper">
+      <div
+        class="flex__center header__sub__wrapper cursor__pointer"
+        @click="routerHistory"
+      >
         <img
           width="28"
           height="28"
@@ -40,8 +44,8 @@
         <div class="header_menu">
           <div>염태민님, 환영합니다.</div>
           <div class="flex_center">
-            <span class="header__menu__button">마이페이지</span>
-            <span class="header__menu__line">|</span>
+            <!-- <span class="header__menu__button">마이페이지</span>
+            <span class="header__menu__line">|</span> -->
             <span class="header__menu__button">로그아웃</span>
           </div>
         </div>
@@ -82,8 +86,8 @@
       <div class="header_menu">
         <div>염태민님, 환영합니다.</div>
         <div class="flex_center">
-          <span class="header__menu__button">마이페이지</span>
-          <span class="header__menu__line">|</span>
+          <!-- <span class="header__menu__button">마이페이지</span>
+          <span class="header__menu__line">|</span> -->
           <span class="header__menu__button">로그아웃</span>
         </div>
       </div>
@@ -126,6 +130,9 @@ function routerSignIn() {
 function routerSignUp() {
   router.push("/signup");
 }
+function routerHistory() {
+  router.push("/history");
+}
 </script>
 
 <style lang="scss" scoped>
@@ -150,6 +157,9 @@ function routerSignUp() {
 }
 .header__history__search__icon {
   margin-right: 8px;
+}
+.cursor__pointer {
+  cursor: pointer;
 }
 .header__menu__button {
   cursor: pointer;

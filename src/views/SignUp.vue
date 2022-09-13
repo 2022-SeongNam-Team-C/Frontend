@@ -40,7 +40,7 @@
       />
       <Input
         margin="2px auto"
-        placeholder="닉네임"
+        placeholder="이름"
         width="423px"
         :onChange="changeUsernameCheck"
       />
