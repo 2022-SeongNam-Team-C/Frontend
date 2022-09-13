@@ -63,19 +63,19 @@
   }
   
   .modal-container {
-    width: 630px;
-    height: 331px;
-    margin: 6px 500px 0 600px;
-    padding: 93px 39px 9px 65px;
+    width: flex;
+    height: fit-content;
+    margin: 3em 25% 3em 25%;
+    padding: 3em 2em 3em 2em;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
     background-color: rgb(255, 255, 255);
-    }
+  }
   
   .modal-header {
-    width: 405px;
-    height: 15px;
-    margin: 0 21px 31px 41px;
+    width: 100%;
+    height: 15%;
+    margin: center;
     font-family: 'GmarketSansLight';
     font-size: 14px;
     font-weight: 300;
@@ -99,9 +99,9 @@
   }
   
   .message {
-    width: 486px;
+    width: 100%;
     height: 42px;
-    margin: 31px 40px 41px 0;
+    margin: 5px 40px 21px 0;
     padding: 1px 47px 0 13px;
     border-radius: 20.6px;
     border: solid 0.4px #000;
@@ -111,14 +111,18 @@
   .modal-default-button {
     width: 91px;
     height: 39px;
-    margin: 4px 7px 1px 198px;
+    margin: 14px 100%;
     border-radius: 10px;
     background-color: #ddddf7;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .modal-footer {
     width: 26px;
-    height: 30px;
+    height: 20px;
     font-family: GmarketSansTTF;
     font-size: 14px;
     font-weight: 300;

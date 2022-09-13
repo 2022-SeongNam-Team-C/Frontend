@@ -31,24 +31,39 @@
     <img
       class="kakao_btn"
       src="@/assets/icons/kakao.png"
-      @click="kakaoLink"
+      @click="shareMessage"
     /> 
+  </div>
+    <div class = "Kakao">
+      카카오톡
+    </div>
+  <div class="SNS">
     <ShareNetwork
       network="facebook"
-      url="https://www.naver.com/"
+      url="https://www.facebook.com/"
+
       title="Ladder"
       description="Line And Drawing, Draw Especial Recollection"
       hashtags="Frontend, Programming">
       <img
         class="facebook_btn"
         src="@/assets/icons/facebook.png"
-        /> 
+        />
     </ShareNetwork>
   </div>
+    <div class = "Facebook">
+      페이스북
+    </div>
 
   <div class="Modal">
-    <button id="show-modal" @click="showModal = true">전송하기</button>
-
+    <img
+      id="show-modal"
+      src="@/assets/icons/send.png"
+      @click="showModal = true"
+    />
+    <div class = "Send">
+      전송하기
+    </div>
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
       <modal :show="showModal" @close="showModal = false">
@@ -67,17 +82,20 @@
     export default{
       components:{ Header_Title, Modal},
       methods: {
-        kakaoLink() {
-          window.Kakao.Link.sendDefault({
-            objectType: 'text',
-            text:
-              'Ladder - Line And Drawing, Draw Especial Recollection',
+        shareMessage() {
+          window.Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+            title: 'Ladder',
+            description: 'Line And Drawing, Draw Especial Recollection',
+            imageUrl: '@/assets/icons/kakao.png',
             link: {
               mobileWebUrl:
                 'https://developers.kakao.com',
               webUrl:
                 'https://developers.kakao.com',
             }
+          },
         });
         }
       },
