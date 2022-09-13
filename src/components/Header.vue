@@ -88,7 +88,7 @@
             content: {
             title: 'Ladder',
             description: 'Line And Drawing, Draw Especial Recollection',
-            imageUrl: '@/assets/icons/kakao.png',
+            imageUrl: 'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
             link: {
               mobileWebUrl:
                 'https://developers.kakao.com',
