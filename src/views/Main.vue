@@ -21,7 +21,7 @@
     </template>
     <div
       v-else
-      class="flex__center"
+      class="flex__center upload__image__wrapper__mobile"
       style="flex-direction: column; margin-top: 24px"
     >
       <div
@@ -65,7 +65,7 @@
               <img
                 src="@/assets/icons/icon-kakao.png"
                 alt="카카오톡 아이콘"
-                width="64px"
+                width="64"
               />
               <div>카카오톡</div>
             </div>
@@ -73,7 +73,7 @@
               <img
                 src="@/assets/icons/icon-facebook.png"
                 alt="페이스북 아이콘"
-                width="64px"
+                width="64"
               />
               <div>페이스북</div>
             </div>
@@ -81,7 +81,7 @@
               <img
                 src="@/assets/icons/share.png"
                 alt="카카오톡 아이콘"
-                width="64px"
+                width="64"
               />
               <div>url 복사</div>
             </div>
@@ -98,15 +98,15 @@
               <img
                 src="@/assets/icons/download.png"
                 alt="카카오톡 아이콘"
-                width="64px"
+                width="64"
               />
               <div>다운로드</div>
             </div>
-            <div class="upload__confirm__share__icon">
+            <div class="upload__confirm__share__icon" @click="showModal = true">
               <img
                 src="@/assets/icons/send.png"
                 alt="카카오톡 아이콘"
-                width="64px"
+                width="64"
               />
               <div>전송하기</div>
             </div>
@@ -118,12 +118,23 @@
       >메인화면으로 돌아가기</u
     >
   </div>
+  <Teleport to="body">
+    <!-- use the modal component, pass in the prop -->
+    <Modal :show="showModal" @close="showModal = false">
+      <template #header>
+        <h3>
+          하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!
+        </h3>
+      </template>
+    </Modal>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 
 import Header from "@/components/Header.vue";
+import Modal from "../components/Modal.vue";
 
 const state = ref<string>("process");
 const images = ref<string>("");
@@ -131,6 +142,8 @@ const file = ref<File | null>();
 const image = ref<any>();
 const fileInput = ref<any>(null);
 const isDragged = ref<boolean>(false);
+const showModal = ref<boolean>(true);
+
 function onFileChange($event: Event) {
   const target = $event.target as HTMLInputElement;
   if (target && target.files) {
@@ -238,7 +251,7 @@ function onDrop(event: any) {
   width: 100%;
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
 }
@@ -301,8 +314,9 @@ function onDrop(event: any) {
   .upload__image__wrapper {
     padding: 1em 1.2em;
   }
-  .upload__image__wrapper__shadow {
-    width: 90%;
+  .upload__image__wrapper__shadow,
+  .upload__image__wrapper__mobile {
+    width: 95% !important;
   }
 }
 .upload__image {
@@ -352,6 +366,7 @@ function onDrop(event: any) {
     align-items: center;
 
     flex-direction: column;
+    margin-top: 0px;
   }
   .upload__confirm__share__title {
     width: 90%;
@@ -370,6 +385,9 @@ function onDrop(event: any) {
   }
   .upload__confirm__go__main {
     margin: 0px 0px 60px 0px !important;
+  }
+  .upload__confirm__share__box {
+    margin: 2em 0px;
   }
 }
 </style>
