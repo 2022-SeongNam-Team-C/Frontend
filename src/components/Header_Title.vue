@@ -1,32 +1,47 @@
 <template>
-  <div class="header_title_wrapper">
+  <div class="header__title__wrapper">
     <img
       src="@/assets/icons/logo.svg"
       alt="프로필 이미지"
-      class="header_profile"
+      class="header__profile"
     />
-    <h1 class="header_title">Hello, Ladder</h1>
-    <p class="header_subtitle">Line And Drawing Draw Especial Recollection</p>
+    <h1 class="header__title">Hello, Ladder</h1>
+    <p class="header__subtitle">Line And Drawing Draw Especial Recollection</p>
   </div>
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped>
-.header_title_wrapper {
+.header__title__wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  margin: 0 auto;
 }
-.header_title {
+.header__title {
   font-size: 40px;
 
-  margin: 4px 0px 0px 0px;
+  margin: -2px 0px 0px 0px;
+  font-family: "Noto Serif KR", serif;
+  font-weight: bold;
 }
-.header_subtitle {
+.header__subtitle {
   font-size: 20px;
 
-  margin: 0px;
+  margin: -4px 0px 0px 0px;
+  font-family: "Noto Serif KR", serif;
+  font-weight: bold;
+}
+@media screen and (max-width: 768px) {
+  .header__title {
+    font-size: 32px;
+  }
+  .header__subtitle {
+    font-size: 16px;
+    text-align: center;
+  }
 }
 </style>
