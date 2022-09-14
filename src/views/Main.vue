@@ -61,7 +61,7 @@
             완성된 사진을 친구들에게 사진을 공유해보세요!
           </div>
           <div class="flex mobile__dir">
-            <div class="upload__confirm__share__icon">
+            <div class="upload__confirm__share__icon" @click="shareKakaoTalk">
               <img
                 src="@/assets/icons/icon-kakao.png"
                 alt="카카오톡 아이콘"
@@ -69,14 +69,22 @@
               />
               <div>카카오톡</div>
             </div>
-            <div class="upload__confirm__share__icon">
-              <img
-                src="@/assets/icons/icon-facebook.png"
-                alt="페이스북 아이콘"
-                width="64"
-              />
-              <div>페이스북</div>
-            </div>
+            <ShareNetwork
+              network="facebook"
+              url="https://www.facebook.com/"
+              title="Ladder"
+              description="Line And Drawing, Draw Especial Recollection"
+              hashtags="Frontend, Programming"
+            >
+              <div class="upload__confirm__share__icon">
+                <img
+                  src="@/assets/icons/icon-facebook.png"
+                  alt="페이스북 아이콘"
+                  width="64"
+                />
+                <div>페이스북</div>
+              </div>
+            </ShareNetwork>
             <div class="upload__confirm__share__icon">
               <img
                 src="@/assets/icons/share.png"
@@ -142,7 +150,7 @@ const file = ref<File | null>();
 const image = ref<any>();
 const fileInput = ref<any>(null);
 const isDragged = ref<boolean>(false);
-const showModal = ref<boolean>(true);
+const showModal = ref<boolean>(false);
 
 function onFileChange($event: Event) {
   const target = $event.target as HTMLInputElement;
@@ -154,6 +162,21 @@ function onFileChange($event: Event) {
     };
     reader.readAsDataURL(target.files[0]);
   }
+}
+function shareKakaoTalk() {
+  window.Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title: "Ladder",
+      description: "Line And Drawing, Draw Especial Recollection",
+      imageUrl:
+        "http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
+      link: {
+        mobileWebUrl: "https://developers.kakao.com",
+        webUrl: "https://developers.kakao.com",
+      },
+    },
+  });
 }
 
 async function imageChange() {
@@ -242,8 +265,12 @@ function onDrop(event: any) {
 
   cursor: pointer;
 }
+.share-network-facebook {
+  text-decoration: none;
+}
 .upload__confirm__share__icon > div {
   margin-top: 0.4em;
+  color: #000000;
 
   text-align: center;
 }
