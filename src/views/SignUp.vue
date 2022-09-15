@@ -27,12 +27,14 @@
       </select>
 
       <Input
+        type="password"
         margin="2px auto"
         placeholder="비밀번호"
         width="423px"
         :onChange="changePassword"
       />
       <Input
+        type="password"
         margin="2px auto"
         placeholder="비밀번호 확인"
         width="423px"

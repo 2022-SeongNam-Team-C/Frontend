@@ -10,13 +10,14 @@
     v-model="valueParent"
     @input="onChange && onChange(value)"
     :disabled="disabled ? disabled : false"
+    :type="type ? type : 'text'"
   />
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-const { width, margin, placeholder, onChange, valueParent, disabled } =
+const { width, margin, placeholder, onChange, valueParent, disabled, type } =
   defineProps({
     width: String,
     margin: String,
@@ -24,6 +25,7 @@ const { width, margin, placeholder, onChange, valueParent, disabled } =
     onChange: Function,
     valueParent: String,
     disabled: Boolean,
+    type: String,
   });
 const value = ref<string>(valueParent ? valueParent : "");
 </script>
