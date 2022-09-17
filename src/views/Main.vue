@@ -110,7 +110,7 @@
               />
               <div>다운로드</div>
             </div>
-            <div class="upload__confirm__share__icon" @click="showModal = true">
+            <div class="upload__confirm__share__icon" @click="shareImage()">
               <img
                 src="@/assets/icons/send.png"
                 alt="카카오톡 아이콘"
@@ -128,7 +128,7 @@
   </div>
   <Teleport to="body">
     <!-- use the modal component, pass in the prop -->
-    <Modal :show="showModal" @close="showModal = false">
+    <Modal :show="showModal" @close="(email:string) => sendEmail(email)">
       <template #header>
         <h3>
           하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!
@@ -140,9 +140,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useToast } from "vue-toastification";
 
 import Header from "@/components/Header.vue";
 import Modal from "../components/Modal.vue";
+import API from "@/services/api";
+import { useStore } from "vuex";
+
+const store = useStore();
+const toast = useToast();
 
 const state = ref<string>("process");
 const images = ref<string>("");
@@ -163,6 +169,43 @@ function onFileChange($event: Event) {
     reader.readAsDataURL(target.files[0]);
   }
 }
+async function shareImage() {
+  if (localStorage.getItem("access-token")) {
+    let fd: any = new FormData();
+    fd.append("file", file.value);
+    // save file.value
+    try {
+      store.state.loading__status = true;
+      const data: any = await API.sendImage({ data: fd });
+      console.log("test", data);
+
+      store.state.loading__status = false;
+      if ((data.statusText = "OK")) {
+        console.log("test");
+        toast.success("이미지 공유에 성공하였습니다.", {
+          timeout: 5000,
+        });
+      } else {
+      }
+    } catch (e) {
+      toast.error("이미지 공유에 실패했습니다.", {
+        timeout: 5000,
+      });
+    }
+  } else {
+    showModal.value = true;
+  }
+}
+function sendEmail(email: string) {
+  console.log(email, "sfsf");
+  if (email != null) {
+    const fd: any = new FormData();
+    fd.append("file", file.value);
+    // save file.value
+    API.sendImage({ data: fd });
+  }
+  showModal.value = false;
+}
 function shareKakaoTalk() {
   window.Kakao.Share.sendDefault({
     objectType: "feed",
@@ -182,7 +225,6 @@ function shareKakaoTalk() {
 async function imageChange() {
   if (file.value) {
     try {
-      // save file.value
       console.log("파일 존재");
       ConfirmEvent();
     } catch (error) {
