@@ -1,22 +1,27 @@
-FROM node:lts-alpine
+FROM node:lts-alpine as build-stage
 
-# install simple http server for serving static content
-RUN npm install -g http-server
+# RUN npm install -g http-server
 
-# make the '/ladder/frontend' folder the current working directory
 WORKDIR /ladder/frontend
 
-# copy both 'package.json' and 'package-lock.json' (if available)
 COPY package*.json /ladder/frontend/
 
-# install project dependencies
 RUN npm install
 
-# copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
-# build app for production with minification
+# build 시 dist 파일 생성
 RUN npm run build
 
-EXPOSE 8080
-CMD [ "http-server", "dist" ]
+############################################################################
+
+# add nginx server
+FROM nginx:stable-alpine as production-stage
+
+COPY  --from=build-stage /ladder/frontend/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+# CMD [ "http-server", "dist" ]
+
+CMD [ "nginx", "-g", "daemon off;" ]
