@@ -2,9 +2,15 @@
   <div class="wrapper">
     <router-view />
   </div>
+  <Loading :status="store.state.loading__status" />
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useStore } from "vuex";
+import Loading from "./components/Loading.vue";
+
+const store = useStore();
+</script>
 
 <style>
 @import url(https://cdn.rawgit.com/kattergil/NotoSerifKR-Web/76eb9ebf/stylesheet/NotoSerif-Web.css);

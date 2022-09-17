@@ -8,9 +8,11 @@
               하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!
             </slot>
           </div>
-          <input class="message" placeholder="test@test.com" />
+          <input class="message" placeholder="test@test.com" v-model="email" />
           <div class="modal-footer">
-            <div class="modal-default-button" @click="$emit('close')">전송</div>
+            <div class="modal-default-button" @click="$emit('close', email)">
+              전송
+            </div>
           </div>
         </div>
         <div class="modal-background" @click="$emit('close')"></div>
@@ -18,9 +20,10 @@
     </div>
   </Transition>
 </template>
-<script setup type="ts">
-const { show } =
-defineProps({
+<script setup lang="ts">
+import { ref } from "vue";
+const { email } = ref<any>("");
+const { show } = defineProps({
   show: Boolean,
 });
 </script>
