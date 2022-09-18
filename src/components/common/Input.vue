@@ -7,7 +7,7 @@
     }"
     alt="Input"
     :placeholder="placeholder"
-    v-model="valueParent"
+    v-model="value"
     @input="onChange && onChange(value)"
     :disabled="disabled ? disabled : false"
     :type="type ? type : 'text'"
@@ -17,17 +17,25 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-const { width, margin, placeholder, onChange, valueParent, disabled, type } =
-  defineProps({
-    width: String,
-    margin: String,
-    placeholder: String,
-    onChange: Function,
-    valueParent: String,
-    disabled: Boolean,
-    type: String,
-  });
-const value = ref<string>(valueParent ? valueParent : "");
+interface IProps {
+  width?: string;
+  margin?: string;
+  placeholder?: string;
+  onChange: Function;
+  value?: string;
+  disabled?: boolean;
+  type?: string;
+}
+
+defineProps({
+  value: { default: "" },
+  width: String,
+  margin: String,
+  placeholder: String,
+  onChange: Function,
+  disabled: Boolean,
+  type: String,
+});
 </script>
 
 <style lang="scss" scoped>
