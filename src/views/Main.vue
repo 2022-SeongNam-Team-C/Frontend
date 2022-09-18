@@ -144,7 +144,7 @@ import { useToast } from "vue-toastification";
 
 import Header from "@/components/Header.vue";
 import Modal from "../components/Modal.vue";
-import API from "@/services/api";
+import Api from "@/services/api";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -176,7 +176,7 @@ async function shareImage() {
     // save file.value
     try {
       store.state.loading__status = true;
-      const data: any = await API.sendImage({ data: fd });
+      const data: any = await Api.sendImage({ data: fd });
       console.log("test", data);
 
       store.state.loading__status = false;
@@ -202,7 +202,7 @@ function sendEmail(email: string) {
     const fd: any = new FormData();
     fd.append("file", file.value);
     // save file.value
-    API.sendImage({ data: fd });
+    Api.sendImage({ data: fd });
   }
   showModal.value = false;
 }

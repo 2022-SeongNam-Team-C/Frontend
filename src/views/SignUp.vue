@@ -3,16 +3,22 @@
     <Header></Header>
     <div class="input__wrapper">
       <div class="input__extend__wrapper">
-        <Input placeholder="이메일" width="200px" :onChange="changeEmail" />
+        <Input
+          value=""
+          placeholder="이메일"
+          width="200px"
+          :onChange="changeEmail"
+        />
         @
 
         <Input
+          value=""
           width="200px"
           :onChange="changeEmailDomain"
           placeholder="직접입력"
           v-if="emailDomainSelectValue == '직접입력' ? true : false"
         />
-        <Input width="200px" :valueParent="emailDomain" v-else disabled />
+        <Input v-else width="200px" :value="emailDomain" disabled />
       </div>
       <select
         class="select"
@@ -27,6 +33,7 @@
       </select>
 
       <Input
+        value=""
         type="password"
         margin="2px auto"
         placeholder="비밀번호"
@@ -34,6 +41,7 @@
         :onChange="changePassword"
       />
       <Input
+        value=""
         type="password"
         margin="2px auto"
         placeholder="비밀번호 확인"
@@ -41,6 +49,7 @@
         :onChange="changePasswordCheck"
       />
       <Input
+        value=""
         margin="2px auto"
         placeholder="이름"
         width="423px"
