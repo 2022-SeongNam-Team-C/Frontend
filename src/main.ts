@@ -11,6 +11,7 @@ import "vue-toastification/dist/index.css";
 const apiKey = process.env.VUE_APP_KAKAO_API_KEY
   ? process.env.VUE_APP_KAKAO_API_KEY
   : "";
+  
 createApp(App)
   .use(store)
   .use(router)

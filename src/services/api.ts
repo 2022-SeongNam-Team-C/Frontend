@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export type SendImageType = {
   data: any;
 };
@@ -36,6 +37,7 @@ class Api {
       }
     });
   }
+
   async signIn(data: SignInType) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -47,6 +49,7 @@ class Api {
       }
     });
   }
+
   async signUp(data: SignUpType) {
     return new Promise(async (resolve, reject) => {
       try {

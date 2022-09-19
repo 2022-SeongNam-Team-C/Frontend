@@ -4,7 +4,7 @@
     <div class="flex__center upload__header__wrapper">
       <div class="upload__text">당신의 추억을 올려주세요!</div>
       <label>
-        <div class="upload__button">파일업로드</div>
+        <div class="upload__button">파일업로드 </div>
         <input
           type="file"
           class="upload__input"
@@ -51,7 +51,7 @@
 
         <div class="upload__image__wrapper">
           <!-- 추후 수정 -->
-          <img :src="image" class="upload__image" />
+          <img :src="image" class="upload__image"/>
         </div>
       </div>
 
@@ -169,6 +169,7 @@ function onFileChange($event: Event) {
     reader.readAsDataURL(target.files[0]);
   }
 }
+
 async function shareImage() {
   if (localStorage.getItem("access-token")) {
     let fd: any = new FormData();
@@ -196,6 +197,7 @@ async function shareImage() {
     showModal.value = true;
   }
 }
+
 function sendEmail(email: string) {
   console.log(email, "sfsf");
   if (email != null) {
@@ -206,6 +208,7 @@ function sendEmail(email: string) {
   }
   showModal.value = false;
 }
+
 function shareKakaoTalk() {
   window.Kakao.Share.sendDefault({
     objectType: "feed",
@@ -223,15 +226,24 @@ function shareKakaoTalk() {
 }
 
 async function imageChange() {
-  if (file.value) {
-    try {
-      console.log("파일 존재");
-      ConfirmEvent();
-    } catch (error) {
-      console.error("X", error);
+if (localStorage.getItem("access-token")) {
+  let fd: any = new FormData();
+  fd.append("file", file.value);
+    if (file.value) {
+      try {
+        console.log("파일 존재");
+        ConfirmEvent();
+        toast.success("이미지 전송에 성공하였습니다.", {
+            timeout: 5000,
+        });
+      } catch (error) {
+        console.error("X", error);
+        toast.error("이미지 전송에 실패했습니다.", {
+            timeout: 5000,
+        });
+      }
     }
   }
-}
 
 function ConfirmEvent() {
   state.value = "confirm";
