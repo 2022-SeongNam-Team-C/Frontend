@@ -56,7 +56,7 @@
         :onChange="changeUsernameCheck"
       />
     </div>
-    <div class="button__wrapper">
+    <div class="button__wrapper" @click="signUp()">
       <div class="button">회원가입</div>
     </div>
     <div class="signup__text">예쁜 추억으로 향하는 사다리 탈 준비 완료!</div>
@@ -70,6 +70,10 @@ import Input from "@/components/common/Input.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+import RegEx from "@/lib/regExp";
+import Api from "@/services/api";
+import { useToast } from "vue-toastification";
+
 const router = useRouter();
 
 const email = ref<string>("");
@@ -78,7 +82,7 @@ const emailDomainSelectValue = ref<string>("직접입력");
 const password = ref<string>("");
 const passwordCheck = ref<string>("");
 const username = ref<string>("");
-
+const toast = useToast();
 function changeEmail(value: string) {
   email.value = value;
   console.log("email", value);
@@ -105,6 +109,35 @@ function changePasswordCheck(value: string) {
 
 function changeUsernameCheck(value: string) {
   username.value = value;
+}
+
+async function signUp() {
+  try {
+    console.log(email.value, password.value);
+    const regex = await RegEx.SignUpRegEx(
+      email.value,
+      password.value,
+      passwordCheck.value,
+      username.value
+    );
+    if (regex.status) {
+      toast.success(regex.message, {
+        timeout: 5000,
+      });
+      const response = await Api.signUp({
+        email: email.value,
+        password: password.value,
+        username: username.value,
+      });
+      // 성공 시 토큰 저장 및 응답 값 처리
+    } else {
+      toast.error(regex.message, {
+        timeout: 5000,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
 }
 </script>
 

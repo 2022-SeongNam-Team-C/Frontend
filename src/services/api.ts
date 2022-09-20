@@ -1,6 +1,6 @@
 import axios from "axios";
 export type SendImageType = {
-  data: any;
+  data: FormData;
 };
 
 export type SignInType = {
@@ -14,6 +14,10 @@ export type SignUpType = {
   username: string;
 };
 
+export type ChangeImageType = {
+  data: FormData;
+};
+
 class Api {
   url: string;
 
@@ -23,7 +27,7 @@ class Api {
       : "http://localhost:5123/api/v1";
   }
 
-  async sendImage(data: SendImageType) {
+  sendImage(data: SendImageType) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await axios.post(
@@ -36,7 +40,17 @@ class Api {
       }
     });
   }
-  async signIn(data: SignInType) {
+  changeImage({ data }: ChangeImageType) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post(`${this.url}/upload-image`, data);
+        resolve(response);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+  signIn(data: SignInType) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await axios.post(`${this.url}/auth/signin`, data);
@@ -47,7 +61,7 @@ class Api {
       }
     });
   }
-  async signUp(data: SignUpType) {
+  signUp(data: SignUpType) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await axios.post(`${this.url}/auth/signup`, data);

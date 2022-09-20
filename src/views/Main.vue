@@ -186,6 +186,7 @@ async function shareImage() {
           timeout: 5000,
         });
       } else {
+        showModal.value = true;
       }
     } catch (e) {
       toast.error("이미지 공유에 실패했습니다.", {
@@ -224,11 +225,27 @@ function shareKakaoTalk() {
 
 async function imageChange() {
   if (file.value) {
+    let fd: any = new FormData();
+    fd.append("file", file.value);
     try {
       console.log("파일 존재");
-      ConfirmEvent();
+
+      const data: any = await Api.changeImage({ data: fd });
+      if ((data.statusText = "OK")) {
+        toast.success("이미지 전송에 성공하였습니다.", {
+          timeout: 5000,
+        });
+        ConfirmEvent();
+      } else {
+        toast.error("이미지 전송에 실패했습니다.", {
+          timeout: 5000,
+        });
+      }
     } catch (error) {
       console.error("X", error);
+      toast.error("이미지 전송에 실패했습니다.", {
+        timeout: 5000,
+      });
     }
   }
 }
