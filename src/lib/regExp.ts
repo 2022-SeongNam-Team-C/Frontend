@@ -33,7 +33,6 @@ class RegExp {
     username: string
   ): Promise<returnType> {
     return new Promise((resolve, reject) => {
-      console.log(email, password);
       if (!this.email.test(email)) {
         resolve({ status: false, message: "올바른 이메일을 입력해주세요." });
       } else if (!this.password.test(password)) {
@@ -47,7 +46,7 @@ class RegExp {
           status: false,
           message: "이름은 2~20자리 내로 작성해주세요.",
         });
-      } else if (password === passwordCheck) {
+      } else if (password !== passwordCheck) {
         resolve({
           status: false,
           message: "비밀번호가 일치하지 않습니다.",

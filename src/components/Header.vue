@@ -46,7 +46,7 @@
           <div class="flex_center">
             <!-- <span class="header__menu__button">마이페이지</span>
             <span class="header__menu__line">|</span> -->
-            <span class="header__menu__button">로그아웃</span>
+            <span class="header__menu__button" @click="logout()">로그아웃</span>
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@
         <div class="flex_center">
           <!-- <span class="header__menu__button">마이페이지</span>
           <span class="header__menu__line">|</span> -->
-          <span class="header__menu__button">로그아웃</span>
+          <span class="header__menu__button" @click="logout()">로그아웃</span>
         </div>
       </div>
     </div>
@@ -117,6 +117,7 @@
 import Header_Title from "@/components/Header_Title.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import Api from "@/services/api";
 const router = useRouter();
 
 const authStatus = ref<boolean>(
@@ -132,6 +133,15 @@ function routerSignUp() {
 }
 function routerHistory() {
   router.push("/history");
+}
+async function logout() {
+  try {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
+    const response = await Api.logout();
+  } catch (e) {
+    console.log(e);
+  }
 }
 </script>
 

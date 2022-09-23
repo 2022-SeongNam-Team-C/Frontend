@@ -11,7 +11,7 @@ export type SignInType = {
 export type SignUpType = {
   email: string;
   password: string;
-  username: string;
+  name: string;
 };
 
 export type ChangeImageType = {
@@ -53,6 +53,7 @@ class Api {
   signIn(data: SignInType) {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(data);
         const response = await axios.post(`${this.url}/auth/signin`, data);
 
         resolve(response);
@@ -65,6 +66,16 @@ class Api {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await axios.post(`${this.url}/auth/signup`, data);
+        resolve(response);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+  logout() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post(`${this.url}/auth/logout`);
         resolve(response);
       } catch (e) {
         reject(e);

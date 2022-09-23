@@ -10,6 +10,7 @@
         :onChange="changeEmail"
       />
       <Input
+        type="password"
         value=""
         placeholder="비밀번호"
         width="423px"
@@ -57,16 +58,14 @@ async function signIn() {
     console.log(email.value, password.value);
     const regex = await RegEx.SignInRegEx(email.value, password.value);
     if (regex.status) {
-      toast.success(regex.message, {
-        timeout: 5000,
-      });
       const response = await Api.signIn({
         email: email.value,
         password: password.value,
       });
+      console.log(response);
       // 성공 시 토큰 저장 및 응답 값 처리
     } else {
-      toast.error(regex.message, {
+      toast.error("이메일 또는 패스워드를 다시 확인해주세요.", {
         timeout: 5000,
       });
     }

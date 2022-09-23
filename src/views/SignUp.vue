@@ -115,19 +115,21 @@ async function signUp() {
   try {
     console.log(email.value, password.value);
     const regex = await RegEx.SignUpRegEx(
-      email.value,
+      email.value + "@" + emailDomain.value,
       password.value,
       passwordCheck.value,
       username.value
     );
     if (regex.status) {
-      toast.success(regex.message, {
-        timeout: 5000,
+      console.log({
+        email: email.value + "@" + emailDomain.value,
+        password: password.value,
+        name: username.value,
       });
       const response = await Api.signUp({
-        email: email.value,
+        email: email.value + "@" + emailDomain.value,
         password: password.value,
-        username: username.value,
+        name: username.value,
       });
       // 성공 시 토큰 저장 및 응답 값 처리
     } else {
