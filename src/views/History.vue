@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <div class="wrapper">
-    <div class="history__title">염태민's History</div>
+    <div class="history__title">{{ name }}'s History</div>
     <div class="history__wrapper">
       <div class="history__image__wrapper"></div>
       <div class="history__image__wrapper"></div>
@@ -15,6 +15,11 @@
 
 <script setup lang="ts">
 import Header from "@/components/Header.vue";
+import { ref } from "vue";
+
+const name = ref<string | null>(
+  localStorage.getItem("name") ? localStorage.getItem("name") : ""
+);
 </script>
 
 <style scoped>

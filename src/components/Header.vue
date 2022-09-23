@@ -12,7 +12,7 @@
         alt="히스토리 둘러보기"
         class="header__history__search__icon"
       />
-      <p>염태민님의 History 둘러보기</p>
+      <p>{{ name }}님의 History 둘러보기</p>
     </div>
     <div class="header__sub__wrapper mobile__display__none" v-else></div>
 
@@ -33,7 +33,7 @@
           alt="히스토리 둘러보기"
           class="header__history__search__icon"
         />
-        <p>염태민님의 History 둘러보기</p>
+        <p>{{ name }}의 History 둘러보기</p>
       </div>
       <div class="flex__center">
         <img
@@ -42,7 +42,7 @@
           class="header__profile"
         />
         <div class="header_menu">
-          <div>염태민님, 환영합니다.</div>
+          <div>{{ name }}님, 환영합니다.</div>
           <div class="flex_center">
             <!-- <span class="header__menu__button">마이페이지</span>
             <span class="header__menu__line">|</span> -->
@@ -84,7 +84,7 @@
         class="header__profile"
       />
       <div class="header_menu">
-        <div>염태민님, 환영합니다.</div>
+        <div>{{ name }}님, 환영합니다.</div>
         <div class="flex_center">
           <!-- <span class="header__menu__button">마이페이지</span>
           <span class="header__menu__line">|</span> -->
@@ -120,6 +120,9 @@ import { useRouter } from "vue-router";
 import Api from "@/services/api";
 const router = useRouter();
 
+const name = ref<string>(
+  localStorage.getItem("name") ? localStorage.getItem("name") : ""
+);
 const authStatus = ref<boolean>(
   localStorage.getItem("access-token") ? true : false
 );
@@ -138,6 +141,8 @@ async function logout() {
   try {
     localStorage.removeItem("access-token");
     localStorage.removeItem("refresh-token");
+    localStorage.removeItem("name");
+    authStatus.value = false;
     const response = await Api.logout();
   } catch (e) {
     console.log(e);

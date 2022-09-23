@@ -54,6 +54,7 @@
         placeholder="이름"
         width="423px"
         :onChange="changeUsernameCheck"
+        v-on:keyup.enter="signUp"
       />
     </div>
     <div class="button__wrapper" @click="signUp()">
@@ -113,7 +114,6 @@ function changeUsernameCheck(value: string) {
 
 async function signUp() {
   try {
-    console.log(email.value, password.value);
     const regex = await RegEx.SignUpRegEx(
       email.value + "@" + emailDomain.value,
       password.value,
@@ -126,11 +126,19 @@ async function signUp() {
         password: password.value,
         name: username.value,
       });
-      const response = await Api.signUp({
+      const response: any = await Api.signUp({
         email: email.value + "@" + emailDomain.value,
         password: password.value,
         name: username.value,
       });
+      if (response) {
+        if ((response.statusText = "OK")) {
+          toast.success("회원가입을 축하드립니다.", {
+            timeout: 5000,
+          });
+          router.push("/signin");
+        }
+      }
       // 성공 시 토큰 저장 및 응답 값 처리
     } else {
       toast.error(regex.message, {

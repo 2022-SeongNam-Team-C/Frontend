@@ -27,6 +27,25 @@ class Api {
       : "http://localhost:5123/api/v1";
   }
 
+  refreshToken() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post(
+          `${this.url}/auth/refresh-token`,
+          {},
+          {
+            headers: {
+              authorization: "Bearer " + localStorage.getItem("refresh-token"),
+            },
+          }
+        );
+        resolve(response);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
   sendImage(data: SendImageType) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -35,15 +54,19 @@ class Api {
           data.data
         );
         resolve(response);
+        console.log(response);
       } catch (e) {
         reject(e);
       }
     });
   }
-  changeImage({ data }: ChangeImageType) {
+  uploadImage({ data }: ChangeImageType) {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await axios.post(`${this.url}/upload-image`, data);
+        const response = await axios.post(
+          `${this.url}/s3/result/upload-image-url`,
+          data
+        );
         resolve(response);
       } catch (e) {
         reject(e);
@@ -54,9 +77,18 @@ class Api {
     return new Promise(async (resolve, reject) => {
       try {
         console.log(data);
-        const response = await axios.post(`${this.url}/auth/signin`, data);
+        const response: any = await axios.post(`${this.url}/auth/signin`, data);
+        console.log("response", response);
+        // 성공시
+        if ((response.statusText = "OK")) {
+          localStorage.setItem("access-token", response.data.access_token);
+          localStorage.setItem("refresh-token", response.data.refresh_token);
+          localStorage.setItem("name", response.data.name);
 
-        resolve(response);
+          resolve(response);
+        } else {
+          reject(response);
+        }
       } catch (e) {
         reject(e);
       }

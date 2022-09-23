@@ -15,10 +15,11 @@
         placeholder="비밀번호"
         width="423px"
         :onChange="changePassword"
+        v-on:keyup.enter="signIn"
       />
     </div>
     <div class="button__wrapper">
-      <div class="button" @click="signIn()">로그인</div>
+      <div class="button" @click="signIn">로그인</div>
       <div class="button__reverse" @click="routerSignUp">회원가입</div>
     </div>
   </div>
@@ -58,11 +59,19 @@ async function signIn() {
     console.log(email.value, password.value);
     const regex = await RegEx.SignInRegEx(email.value, password.value);
     if (regex.status) {
-      const response = await Api.signIn({
+      const response: any = await Api.signIn({
         email: email.value,
         password: password.value,
       });
       console.log(response);
+
+      // 성공시
+      if ((response.statusText = "OK")) {
+        toast.success("로그인을 성공하였습니다.", {
+          timeout: 5000,
+        });
+        router.push("/");
+      }
       // 성공 시 토큰 저장 및 응답 값 처리
     } else {
       toast.error("이메일 또는 패스워드를 다시 확인해주세요.", {

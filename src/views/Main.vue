@@ -230,7 +230,8 @@ async function imageChange() {
     try {
       console.log("파일 존재");
 
-      const data: any = await Api.changeImage({ data: fd });
+      const data: any = await Api.uploadImage({ data: fd });
+      console.log("rep", data);
       if ((data.statusText = "OK")) {
         toast.success("이미지 전송에 성공하였습니다.", {
           timeout: 5000,
