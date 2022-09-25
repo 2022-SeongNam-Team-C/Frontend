@@ -362,6 +362,8 @@ function onDrop(event: any) {
 }
 .upload__header__wrapper {
   margin-top: 3.2em;
+
+  flex-wrap: wrap;
 }
 .upload__image__wrapper {
   width: fit-content;

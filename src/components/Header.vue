@@ -120,7 +120,7 @@ import { useRouter } from "vue-router";
 import Api from "@/services/api";
 const router = useRouter();
 
-const name = ref<string>(
+const name = ref<string | null>(
   localStorage.getItem("name") ? localStorage.getItem("name") : ""
 );
 const authStatus = ref<boolean>(
@@ -156,7 +156,7 @@ async function logout() {
   justify-content: space-between;
   align-items: flex-start;
 
-  margin: 2.2em 0.5em 1.1em 0.5em;
+  margin: 2.2em 0.5em 0.1em 0.5em;
 }
 .header__menu {
   display: flex;
