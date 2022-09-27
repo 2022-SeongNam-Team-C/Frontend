@@ -181,6 +181,7 @@ async function logout() {
 }
 .header__sub__wrapper {
   width: 260px;
+  min-width: 260px;
 }
 .header__auth__wrapper {
   margin: 0px 10px;

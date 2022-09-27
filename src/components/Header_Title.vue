@@ -47,6 +47,8 @@ function logo() {
   font-family: "Noto Serif KR", serif;
   font-weight: bold;
   cursor: pointer;
+
+  text-align: center;
 }
 .header__profile {
   cursor: pointer;

@@ -266,6 +266,15 @@ function shareKakaoTalk() {
         webUrl: "https://developers.kakao.com",
       },
     },
+    buttons: [
+      {
+        title: "사진 만들기",
+        link: {
+          mobileWebUrl: "https://developers.kakao.com",
+          webUrl: "https://developers.kakao.com",
+        },
+      },
+    ],
   });
 }
 
