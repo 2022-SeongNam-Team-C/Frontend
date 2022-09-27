@@ -51,10 +51,44 @@ class Api {
       try {
         const response = await axios.post(
           `${this.url}/images/transmission`,
+          data.data,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access-token"),
+            },
+          }
+        );
+        resolve(response);
+        console.log(response);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+  sendImage2(data: SendImageType) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post(
+          `${this.url}/images/transmission`,
           data.data
         );
         resolve(response);
         console.log(response);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+  historyImage() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.get(`${this.url}/s3/history`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access-token"),
+          },
+        });
+        console.log(response);
+        resolve(response);
       } catch (e) {
         reject(e);
       }

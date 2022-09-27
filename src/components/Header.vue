@@ -180,7 +180,7 @@ async function logout() {
   cursor: pointer;
 }
 .header__sub__wrapper {
-  width: 250px;
+  width: 260px;
 }
 .header__auth__wrapper {
   margin: 0px 10px;

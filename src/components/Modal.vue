@@ -8,7 +8,12 @@
               하단에 이메일을 입력하시면, 입력하신 이메일로 사진을 보내드려요!
             </slot>
           </div>
-          <input class="message" placeholder="test@test.com" v-model="email" />
+          <input
+            class="message"
+            placeholder="test@test.com"
+            v-model="email"
+            v-on:keyup.enter="$emit('close', email)"
+          />
           <div class="modal-footer">
             <div class="modal-default-button" @click="$emit('close', email)">
               전송
