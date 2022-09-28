@@ -30,15 +30,12 @@ class Api {
   refreshToken() {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await axios.post(
-          `${this.url}/auth/refresh-token`,
-          {},
-          {
-            headers: {
-              authorization: "Bearer " + localStorage.getItem("refresh-token"),
-            },
-          }
-        );
+        const response = await axios.get(`${this.url}/auth/refresh`, {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("refresh-token"),
+          },
+        });
+        localStorage.setItem("access-token", response.data.access_token);
         resolve(response);
       } catch (e) {
         reject(e);
@@ -60,8 +57,26 @@ class Api {
         );
         resolve(response);
         console.log(response);
-      } catch (e) {
-        reject(e);
+      } catch (e: any) {
+        if (
+          e.response.data.error == "This Token is expired." &&
+          localStorage.getItem("refresh-token") != null
+        ) {
+          try {
+            const data2: any = await this.refreshToken();
+            localStorage.setItem("access-token", data2.data.access_token);
+            console.log("adadad", data, data2.data);
+            const res2 = await this.sendImage(data);
+            resolve(res2);
+          } catch (e) {
+            localStorage.removeItem("access-token");
+            localStorage.removeItem("refresh-token");
+            localStorage.removeItem("name");
+            window.location.href = "/";
+          }
+        } else {
+          reject(e);
+        }
       }
     });
   }
@@ -89,21 +104,72 @@ class Api {
         });
         console.log(response);
         resolve(response);
-      } catch (e) {
-        reject(e);
+      } catch (e: any) {
+        if (
+          e.response.data.error == "This Token is expired." &&
+          localStorage.getItem("refresh-token") != null
+        ) {
+          try {
+            const res: any = await this.refreshToken();
+            console.log(res);
+            localStorage.setItem("access-token", res.data.access_token);
+            const res2 = await this.historyImage();
+            resolve(res2);
+          } catch (e) {
+            localStorage.removeItem("access-token");
+            localStorage.removeItem("refresh-token");
+            localStorage.removeItem("name");
+            window.location.href = "/";
+
+            reject(e);
+          }
+        } else {
+          reject(e);
+        }
       }
     });
   }
   uploadImage({ data }: ChangeImageType) {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await axios.post(
-          `${this.url}/s3/result/upload-image-url`,
-          data
-        );
+        let response;
+        if (localStorage.getItem("access-token")) {
+          response = await axios.post(
+            `${this.url}/s3/result/upload-image-url`,
+            data,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access-token"),
+              },
+            }
+          );
+        } else {
+          response = await axios.post(
+            `${this.url}/s3/result/upload-image-url`,
+            data
+          );
+        }
         resolve(response);
-      } catch (e) {
-        reject(e);
+      } catch (e: any) {
+        if (
+          e.response.data.error == "This Token is expired." &&
+          localStorage.getItem("refresh-token") != null
+        ) {
+          try {
+            const res: any = await this.refreshToken();
+            console.log(res);
+            localStorage.setItem("access-token", res.data.access_token);
+            const res2 = await this.uploadImage({ data });
+            resolve(res2);
+          } catch (e) {
+            localStorage.removeItem("access-token");
+            localStorage.removeItem("refresh-token");
+            localStorage.removeItem("name");
+            window.location.href = "/";
+          }
+        } else {
+          reject(e);
+        }
       }
     });
   }

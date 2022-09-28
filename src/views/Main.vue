@@ -226,21 +226,24 @@ async function sendEmail(email: string) {
     fd.append("email", email);
     // save file.value
     store.state.loading__status = true;
+    try {
+      const response: any = await Api.sendImage2({ data: fd });
+      store.state.loading__status = false;
 
-    const response: any = await Api.sendImage2({ data: fd });
-    store.state.loading__status = false;
-
-    if ((response.statusText = "OK")) {
-      toast.success("이미지 전송에 성공하였습니다.", {
-        timeout: 5000,
-      });
-    } else {
-      toast.error("이미지 전송에 실패했습니다.", {
-        timeout: 5000,
-      });
+      if ((response.statusText = "OK")) {
+        toast.success("이미지 전송에 성공하였습니다.", {
+          timeout: 5000,
+        });
+      } else {
+        toast.error("이미지 전송에 실패했습니다.", {
+          timeout: 5000,
+        });
+      }
+    } catch (e) {
+      store.state.loading__status = false;
     }
+    showModal.value = false;
   }
-  showModal.value = false;
 }
 function shareKakaoTalk() {
   console.log({
@@ -302,6 +305,8 @@ async function imageChange() {
         });
       }
     } catch (error) {
+      store.state.loading__status = false;
+
       console.error("X", error);
       toast.error("이미지 전송에 실패했습니다.", {
         timeout: 5000,
