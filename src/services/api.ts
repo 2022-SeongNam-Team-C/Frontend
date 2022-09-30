@@ -134,20 +134,13 @@ class Api {
       try {
         let response;
         if (localStorage.getItem("access-token")) {
-          response = await axios.post(
-            `${this.url}/s3/result/upload-image-url`,
-            data,
-            {
-              headers: {
-                Authorization: "Bearer " + localStorage.getItem("access-token"),
-              },
-            }
-          );
+          response = await axios.post(`${this.url}/convert-image`, data, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access-token"),
+            },
+          });
         } else {
-          response = await axios.post(
-            `${this.url}/s3/result/upload-image-url`,
-            data
-          );
+          response = await axios.post(`${this.url}/convert-image`, data);
         }
         resolve(response);
       } catch (e: any) {
