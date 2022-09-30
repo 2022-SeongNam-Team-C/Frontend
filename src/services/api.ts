@@ -134,13 +134,13 @@ class Api {
       try {
         let response;
         if (localStorage.getItem("access-token")) {
-          response = await axios.post(`${this.url}/convert-image`, data, {
+          response = await axios.post(`${this.url}/images/result`, data, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access-token"),
             },
           });
         } else {
-          response = await axios.post(`${this.url}/convert-image`, data);
+          response = await axios.post(`${this.url}/images/result`, data);
         }
         resolve(response);
       } catch (e: any) {
