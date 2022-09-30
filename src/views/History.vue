@@ -24,7 +24,7 @@ const data = ref<any>({});
 async function created() {
   const response: any = await Api.historyImage();
   console.log("aa", response);
-  data.value = eval(response.data);
+  data.value = response.data;
   console.log(data.value);
 }
 created();

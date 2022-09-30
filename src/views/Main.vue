@@ -291,7 +291,7 @@ async function imageChange() {
 
       const data: any = await Api.uploadImage({ data: fd });
       store.state.loading__status = false;
-      image.value = data.data;
+      image.value = data.result_image;
 
       console.log("rep", data);
       if ((data.statusText = "OK")) {
