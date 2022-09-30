@@ -12,7 +12,7 @@
         alt="히스토리 둘러보기"
         class="header__history__search__icon"
       />
-      <p>염태민님의 History 둘러보기</p>
+      <p>{{ name }}님의 History 둘러보기</p>
     </div>
     <div class="header__sub__wrapper mobile__display__none" v-else></div>
 
@@ -33,7 +33,7 @@
           alt="히스토리 둘러보기"
           class="header__history__search__icon"
         />
-        <p>염태민님의 History 둘러보기</p>
+        <p>{{ name }}의 History 둘러보기</p>
       </div>
       <div class="flex__center">
         <img
@@ -42,11 +42,11 @@
           class="header__profile"
         />
         <div class="header_menu">
-          <div>염태민님, 환영합니다.</div>
+          <div>{{ name }}님, 환영합니다.</div>
           <div class="flex_center">
             <!-- <span class="header__menu__button">마이페이지</span>
             <span class="header__menu__line">|</span> -->
-            <span class="header__menu__button">로그아웃</span>
+            <span class="header__menu__button" @click="logout()">로그아웃</span>
           </div>
         </div>
       </div>
@@ -84,11 +84,11 @@
         class="header__profile"
       />
       <div class="header_menu">
-        <div>염태민님, 환영합니다.</div>
+        <div>{{ name }}님, 환영합니다.</div>
         <div class="flex_center">
           <!-- <span class="header__menu__button">마이페이지</span>
           <span class="header__menu__line">|</span> -->
-          <span class="header__menu__button">로그아웃</span>
+          <span class="header__menu__button" @click="logout()">로그아웃</span>
         </div>
       </div>
     </div>
@@ -117,8 +117,12 @@
 import Header_Title from "@/components/Header_Title.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import Api from "@/services/api";
 const router = useRouter();
 
+const name = ref<string | null>(
+  localStorage.getItem("name") ? localStorage.getItem("name") : ""
+);
 const authStatus = ref<boolean>(
   localStorage.getItem("access-token") ? true : false
 );
@@ -133,6 +137,17 @@ function routerSignUp() {
 function routerHistory() {
   router.push("/history");
 }
+async function logout() {
+  try {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
+    localStorage.removeItem("name");
+    authStatus.value = false;
+    const response = await Api.logout();
+  } catch (e) {
+    console.log(e);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -141,7 +156,7 @@ function routerHistory() {
   justify-content: space-between;
   align-items: flex-start;
 
-  margin: 2.2em 0.5em 1.1em 0.5em;
+  margin: 2.2em 0.5em 0.1em 0.5em;
 }
 .header__menu {
   display: flex;
@@ -165,7 +180,8 @@ function routerHistory() {
   cursor: pointer;
 }
 .header__sub__wrapper {
-  width: 250px;
+  width: 260px;
+  min-width: 260px;
 }
 .header__auth__wrapper {
   margin: 0px 10px;

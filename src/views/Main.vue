@@ -71,7 +71,7 @@
             </div>
             <ShareNetwork
               network="facebook"
-              url="https://www.facebook.com/"
+              :url="image"
               title="Ladder"
               description="Line And Drawing, Draw Especial Recollection"
               hashtags="Frontend, Programming"
@@ -85,7 +85,7 @@
                 <div>페이스북</div>
               </div>
             </ShareNetwork>
-            <div class="upload__confirm__share__icon">
+            <div class="upload__confirm__share__icon" @click="url">
               <img
                 src="@/assets/icons/share.png"
                 alt="카카오톡 아이콘"
@@ -102,14 +102,17 @@
             보내드려요.
           </div>
           <div class="flex mobile__dir">
-            <div class="upload__confirm__share__icon">
-              <img
-                src="@/assets/icons/download.png"
-                alt="카카오톡 아이콘"
-                width="64"
-              />
-              <div>다운로드</div>
-            </div>
+            <a :href="image" download target="_blank" class="a">
+              <div class="upload__confirm__share__icon">
+                <img
+                  src="@/assets/icons/download.png"
+                  alt="카카오톡 아이콘"
+                  width="64"
+                />
+                <div>다운로드</div>
+              </div>
+            </a>
+
             <div class="upload__confirm__share__icon" @click="shareImage()">
               <img
                 src="@/assets/icons/send.png"
@@ -144,7 +147,7 @@ import { useToast } from "vue-toastification";
 
 import Header from "@/components/Header.vue";
 import Modal from "../components/Modal.vue";
-import API from "@/services/api";
+import Api from "@/services/api";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -169,6 +172,24 @@ function onFileChange($event: Event) {
     reader.readAsDataURL(target.files[0]);
   }
 }
+function url() {
+  if (image.value != "") {
+    var url = image.value;
+    navigator.clipboard
+      .writeText(image.value)
+      // 성공인 경우
+      .then(() => {
+        toast.success("이미지 URL 복사 완료", {
+          timeout: 3000,
+        });
+      })
+      .catch((err) => {
+        toast.error("이미지 URL 복사 실패", {
+          timeout: 3000,
+        });
+      });
+  }
+}
 async function shareImage() {
   if (localStorage.getItem("access-token")) {
     let fd: any = new FormData();
@@ -176,7 +197,7 @@ async function shareImage() {
     // save file.value
     try {
       store.state.loading__status = true;
-      const data: any = await API.sendImage({ data: fd });
+      const data: any = await Api.sendImage({ data: fd });
       console.log("test", data);
 
       store.state.loading__status = false;
@@ -186,6 +207,7 @@ async function shareImage() {
           timeout: 5000,
         });
       } else {
+        showModal.value = true;
       }
     } catch (e) {
       toast.error("이미지 공유에 실패했습니다.", {
@@ -196,39 +218,99 @@ async function shareImage() {
     showModal.value = true;
   }
 }
-function sendEmail(email: string) {
+async function sendEmail(email: string) {
   console.log(email, "sfsf");
   if (email != null) {
     const fd: any = new FormData();
     fd.append("file", file.value);
+    fd.append("email", email);
     // save file.value
-    API.sendImage({ data: fd });
+    store.state.loading__status = true;
+    try {
+      const response: any = await Api.sendImage2({ data: fd });
+      store.state.loading__status = false;
+
+      if ((response.statusText = "OK")) {
+        toast.success("이미지 전송에 성공하였습니다.", {
+          timeout: 5000,
+        });
+      } else {
+        toast.error("이미지 전송에 실패했습니다.", {
+          timeout: 5000,
+        });
+      }
+    } catch (e) {
+      store.state.loading__status = false;
+    }
+    showModal.value = false;
   }
-  showModal.value = false;
 }
 function shareKakaoTalk() {
-  window.Kakao.Share.sendDefault({
+  console.log({
     objectType: "feed",
     content: {
       title: "Ladder",
       description: "Line And Drawing, Draw Especial Recollection",
-      imageUrl:
-        "http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
+      imageUrl: image.value ? image.value : "",
       link: {
         mobileWebUrl: "https://developers.kakao.com",
         webUrl: "https://developers.kakao.com",
       },
     },
   });
+  window.Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title: "Ladder",
+      description: "Line And Drawing, Draw Especial Recollection",
+      imageUrl: image.value ? image.value : "",
+      link: {
+        mobileWebUrl: "https://developers.kakao.com",
+        webUrl: "https://developers.kakao.com",
+      },
+    },
+    buttons: [
+      {
+        title: "사진 만들기",
+        link: {
+          mobileWebUrl: "https://developers.kakao.com",
+          webUrl: "https://developers.kakao.com",
+        },
+      },
+    ],
+  });
 }
 
 async function imageChange() {
   if (file.value) {
+    let fd: any = new FormData();
+    fd.append("file", file.value);
     try {
       console.log("파일 존재");
-      ConfirmEvent();
+      store.state.loading__status = true;
+
+      const data: any = await Api.uploadImage({ data: fd });
+      store.state.loading__status = false;
+      image.value = data.data;
+
+      console.log("rep", data);
+      if ((data.statusText = "OK")) {
+        toast.success("이미지 전송에 성공하였습니다.", {
+          timeout: 5000,
+        });
+        ConfirmEvent();
+      } else {
+        toast.error("이미지 전송에 실패했습니다.", {
+          timeout: 5000,
+        });
+      }
     } catch (error) {
+      store.state.loading__status = false;
+
       console.error("X", error);
+      toast.error("이미지 전송에 실패했습니다.", {
+        timeout: 5000,
+      });
     }
   }
 }
@@ -272,6 +354,9 @@ function onDrop(event: any) {
 </script>
 
 <style scoped>
+.a {
+  text-decoration: none;
+}
 .upload__confirm__wrapper {
   display: flex;
   justify-content: center;
@@ -344,6 +429,8 @@ function onDrop(event: any) {
 }
 .upload__header__wrapper {
   margin-top: 3.2em;
+
+  flex-wrap: wrap;
 }
 .upload__image__wrapper {
   width: fit-content;

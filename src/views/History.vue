@@ -1,20 +1,33 @@
 <template>
   <Header></Header>
   <div class="wrapper">
-    <div class="history__title">염태민's History</div>
+    <div class="history__title">{{ name }}'s History</div>
     <div class="history__wrapper">
-      <div class="history__image__wrapper"></div>
-      <div class="history__image__wrapper"></div>
-      <div class="history__image__wrapper"></div>
-      <div class="history__image__wrapper"></div>
-      <div class="history__image__wrapper"></div>
-      <div class="history__image__wrapper"></div>
+      <div class="history__image__wrapper" v-for="(v, i) in data">
+        <img :src="v.image_url" alt="image_Url" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Header from "@/components/Header.vue";
+import { ref } from "vue";
+import Api from "@/services/api";
+
+const name = ref<string | null>(
+  localStorage.getItem("name") ? localStorage.getItem("name") : ""
+);
+
+const data = ref<any>({});
+
+async function created() {
+  const response: any = await Api.historyImage();
+  console.log("aa", response);
+  data.value = eval(response.data);
+  console.log(data.value);
+}
+created();
 </script>
 
 <style scoped>
@@ -45,7 +58,8 @@ import Header from "@/components/Header.vue";
   color: #000;
 }
 .history__image__wrapper {
-  min-width: 330px;
+  max-width: 330px;
+  width: 330px;
   height: 330px;
 
   border-radius: 15px;
@@ -59,6 +73,16 @@ import Header from "@/components/Header.vue";
   flex-direction: column;
 
   box-sizing: border-box;
+}
+.history__image__wrapper > img {
+  width: 90%;
+  height: 90%;
+
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 15px;
+
+  object-fit: contain;
 }
 @media screen and (max-width: 768px) {
   .history__image__wrapper,

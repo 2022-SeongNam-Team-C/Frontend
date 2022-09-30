@@ -3,11 +3,23 @@
     <Header></Header>
 
     <div class="input__wrapper">
-      <Input placeholder="이메일" width="423px" :onChange="changeEmail" />
-      <Input placeholder="비밀번호" width="423px" :onChange="changePassword" />
+      <Input
+        value=""
+        placeholder="이메일"
+        width="423px"
+        :onChange="changeEmail"
+      />
+      <Input
+        type="password"
+        value=""
+        placeholder="비밀번호"
+        width="423px"
+        :onChange="changePassword"
+        v-on:keyup.enter="signIn"
+      />
     </div>
     <div class="button__wrapper">
-      <div class="button">로그인</div>
+      <div class="button" @click="signIn">로그인</div>
       <div class="button__reverse" @click="routerSignUp">회원가입</div>
     </div>
   </div>
@@ -19,6 +31,11 @@ import Input from "@/components/common/Input.vue";
 
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import Api from "@/services/api";
+
+import RegEx, { returnType } from "@/lib/regExp";
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 const router = useRouter();
 const email = ref<string>("");
@@ -36,6 +53,34 @@ function changePassword(value: string) {
 
 function routerSignUp() {
   router.push("/signup");
+}
+async function signIn() {
+  try {
+    console.log(email.value, password.value);
+    const regex = await RegEx.SignInRegEx(email.value, password.value);
+    if (regex.status) {
+      const response: any = await Api.signIn({
+        email: email.value,
+        password: password.value,
+      });
+      console.log(response);
+
+      // 성공시
+      if ((response.statusText = "OK")) {
+        toast.success("로그인을 성공하였습니다.", {
+          timeout: 5000,
+        });
+        router.push("/");
+      }
+      // 성공 시 토큰 저장 및 응답 값 처리
+    } else {
+      toast.error("이메일 또는 패스워드를 다시 확인해주세요.", {
+        timeout: 5000,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
 }
 </script>
 

@@ -3,16 +3,22 @@
     <Header></Header>
     <div class="input__wrapper">
       <div class="input__extend__wrapper">
-        <Input placeholder="이메일" width="200px" :onChange="changeEmail" />
+        <Input
+          value=""
+          placeholder="이메일"
+          width="200px"
+          :onChange="changeEmail"
+        />
         @
 
         <Input
+          value=""
           width="200px"
           :onChange="changeEmailDomain"
           placeholder="직접입력"
           v-if="emailDomainSelectValue == '직접입력' ? true : false"
         />
-        <Input width="200px" :valueParent="emailDomain" v-else disabled />
+        <Input v-else width="200px" :value="emailDomain" disabled />
       </div>
       <select
         class="select"
@@ -27,6 +33,7 @@
       </select>
 
       <Input
+        value=""
         type="password"
         margin="2px auto"
         placeholder="비밀번호"
@@ -34,6 +41,7 @@
         :onChange="changePassword"
       />
       <Input
+        value=""
         type="password"
         margin="2px auto"
         placeholder="비밀번호 확인"
@@ -41,13 +49,15 @@
         :onChange="changePasswordCheck"
       />
       <Input
+        value=""
         margin="2px auto"
         placeholder="이름"
         width="423px"
         :onChange="changeUsernameCheck"
+        v-on:keyup.enter="signUp"
       />
     </div>
-    <div class="button__wrapper">
+    <div class="button__wrapper" @click="signUp()">
       <div class="button">회원가입</div>
     </div>
     <div class="signup__text">예쁜 추억으로 향하는 사다리 탈 준비 완료!</div>
@@ -61,6 +71,10 @@ import Input from "@/components/common/Input.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+import RegEx from "@/lib/regExp";
+import Api from "@/services/api";
+import { useToast } from "vue-toastification";
+
 const router = useRouter();
 
 const email = ref<string>("");
@@ -69,7 +83,7 @@ const emailDomainSelectValue = ref<string>("직접입력");
 const password = ref<string>("");
 const passwordCheck = ref<string>("");
 const username = ref<string>("");
-
+const toast = useToast();
 function changeEmail(value: string) {
   email.value = value;
   console.log("email", value);
@@ -96,6 +110,44 @@ function changePasswordCheck(value: string) {
 
 function changeUsernameCheck(value: string) {
   username.value = value;
+}
+
+async function signUp() {
+  try {
+    const regex = await RegEx.SignUpRegEx(
+      email.value + "@" + emailDomain.value,
+      password.value,
+      passwordCheck.value,
+      username.value
+    );
+    if (regex.status) {
+      console.log({
+        email: email.value + "@" + emailDomain.value,
+        password: password.value,
+        name: username.value,
+      });
+      const response: any = await Api.signUp({
+        email: email.value + "@" + emailDomain.value,
+        password: password.value,
+        name: username.value,
+      });
+      if (response) {
+        if ((response.statusText = "OK")) {
+          toast.success("회원가입을 축하드립니다.", {
+            timeout: 5000,
+          });
+          router.push("/signin");
+        }
+      }
+      // 성공 시 토큰 저장 및 응답 값 처리
+    } else {
+      toast.error(regex.message, {
+        timeout: 5000,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
 }
 </script>
 
